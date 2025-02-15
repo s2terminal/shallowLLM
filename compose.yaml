@@ -9,3 +9,13 @@ services:
       - 4321:4321
     working_dir: /app
     command: npm run dev
+  python-server:
+    image: python:alpine
+    volumes:
+      - ./dist:/app
+    working_dir: /app
+    ports:
+      - 3000:3000
+    command: python -m http.server 3000
+    profiles:
+      - serve
