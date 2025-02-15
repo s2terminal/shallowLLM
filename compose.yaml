@@ -3,8 +3,8 @@ services:
     image: node:alpine
     volumes:
       - .:/app
-    # env_file:
-    #   - .env
+    env_file:
+      - .env
     ports:
       - 4321:4321
     working_dir: /app
