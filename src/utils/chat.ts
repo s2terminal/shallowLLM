@@ -2,13 +2,18 @@ import { OpenAI } from 'openai';
 
 const OPENAI_API_KEY = import.meta.env.PUBLIC_OPENAI_API_KEY;
 
-export const chat = async (inputText: string): Promise<() => AsyncGenerator<string>> => {
+type ChatHistory = {
+  role: "user" | "assistant" | "system";
+  content: string;
+};
+
+export const chat = async (input: ChatHistory[]): Promise<() => AsyncGenerator<string>> => {
   const openai = new OpenAI(
     { apiKey: OPENAI_API_KEY, dangerouslyAllowBrowser: true },
   );
   const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
-      messages: [ { role: "user", content: inputText } ],
+      messages: input,
       stream: true,
   });
 

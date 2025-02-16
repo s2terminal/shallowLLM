@@ -2,11 +2,15 @@ import { useState } from 'react';
 import { chat } from '../utils/chat';
 
 export default function MyReactComponent() {
-  const [text, setText] = useState('こんにちは');
+  const [text, setText] = useState('Hello, how are you?');
   const [response, setResponse] = useState('');
 
   const handleChat = async () => {
-    const res = await chat(text);
+    const res = await chat([
+      { role: 'system', content: '入力を日本語に翻訳して' },
+      { role: 'user', content: text }
+    ]);
+
     if (res) {
       for await (const chunk of res()) {
         setResponse(prev => prev + chunk);
