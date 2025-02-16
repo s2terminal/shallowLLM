@@ -8,7 +8,9 @@ export default function MyReactComponent() {
   const handleChat = async () => {
     const res = await chat(text);
     if (res) {
-      setResponse(res);
+      for await (const chunk of res()) {
+        setResponse(prev => prev + chunk);
+      }
     }
   };
 
