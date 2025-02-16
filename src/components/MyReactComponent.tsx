@@ -2,16 +2,18 @@ import { useState } from 'react';
 import { chat } from '../utils/chat';
 
 export default function MyReactComponent() {
-  const [text, setText] = useState('Hello, how are you?');
+  const [systemMessage, setSystemMessage] = useState('入力を日本語に翻訳して');
+  const [inputText, setInputText] = useState('Hello, how are you?');
   const [response, setResponse] = useState('');
 
   const handleChat = async () => {
     const res = await chat([
-      { role: 'system', content: '入力を日本語に翻訳して' },
-      { role: 'user', content: text }
+      { role: 'system', content: systemMessage },
+      { role: 'user', content: inputText }
     ]);
 
     if (res) {
+      setResponse('');
       for await (const chunk of res()) {
         setResponse(prev => prev + chunk);
       }
@@ -21,11 +23,18 @@ export default function MyReactComponent() {
   return (
     <>
       <div className="grid grid-cols-2 gap-4">
+        <div className="col-span-2 p-4">
+          <textarea
+            className="block w-full rounded-md outline-1 outline-gray-300"
+            value={systemMessage}
+            onChange={(e) => setSystemMessage(e.target.value)}
+          />
+        </div>
         <div className="p-4">
           <textarea
             className="block w-full rounded-md outline-1 outline-gray-300"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
           />
         </div>
         <div className="p-4">
