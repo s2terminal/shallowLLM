@@ -7,12 +7,14 @@ type ChatHistory = {
   content: string;
 };
 
-export const chat = async (input: ChatHistory[]): Promise<() => AsyncGenerator<string>> => {
+export type Model = "gpt-4o-mini" | "gpt-4o";
+
+export const chat = async (input: ChatHistory[], model: Model = "gpt-4o-mini"): Promise<() => AsyncGenerator<string>> => {
   const openai = new OpenAI(
     { apiKey: OPENAI_API_KEY, dangerouslyAllowBrowser: true },
   );
   const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: model,
       messages: input,
       stream: true,
   });

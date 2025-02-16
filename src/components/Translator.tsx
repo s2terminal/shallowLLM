@@ -1,16 +1,17 @@
 import { useState } from 'react';
-import { chat } from '../utils/chat';
+import { chat, type Model } from '../utils/chat';
 
 export default function Translator() {
   const [systemMessage, setSystemMessage] = useState('入力を日本語に翻訳して');
   const [inputText, setInputText] = useState('Hello, how are you?');
   const [response, setResponse] = useState('');
+  const [model, setModel] = useState<Model>('gpt-4o-mini');
 
   const handleChat = async () => {
     const res = await chat([
       { role: 'system', content: systemMessage },
       { role: 'user', content: inputText }
-    ]);
+    ], model);
 
     if (res) {
       setResponse('');
@@ -43,8 +44,16 @@ export default function Translator() {
           {response && <p>Response: {response}</p>}
         </div>
         <div className="col-span-2 p-2">
+          <select
+            className="w-full p-2 my-2 rounded-md outline-1 outline-gray-300"
+            value={model}
+            onChange={(e) => setModel(e.target.value as Model)}>
+            {/* TODO: 型チェックに当てはまるようにする */}
+            <option value="gpt-4o-mini">gpt-4o-mini</option>
+            <option value="gpt-4o">gpt-4o</option>
+          </select>
           <button
-            className="w-full rounded-md px-2.5 py-1.5 ring-1 shadow-xs ring-gray-300 hover:ring-gray-500"
+            className="w-full rounded-md p-2 my-2 ring-1 shadow-xs ring-gray-300 hover:ring-gray-500"
             onClick={handleChat}>
             実行
           </button>
