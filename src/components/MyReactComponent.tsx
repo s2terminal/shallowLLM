@@ -26,9 +26,14 @@ export default function MyReactComponent() {
 
   return (
     <>
-      <textarea value={text} onChange={(e) => setText(e.target.value)} />
+      <textarea
+        className="block w-full rounded-md outline-1 outline-gray-300" value={text} onChange={(e) => setText(e.target.value)} />
       <p>{text}</p>
-      <button onClick={handleChat}>実行</button>
+      <button
+        className="rounded-md px-2.5 py-1.5 ring-1 shadow-xs ring-gray-300"
+        onClick={handleChat}>
+          実行
+      </button>
       {response && <p>Response: {response}</p>}
     </>
   );
